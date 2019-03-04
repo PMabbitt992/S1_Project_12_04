@@ -39,6 +39,27 @@ function calcPercent(value, sum) {
 }
 
 var reportHTML = "<h1>" + raceTitle + "</h1>";
-for (var i = 0; i < race; i++) {
 
+for (var i = 0; i < race.length; i++) {
+    var totalVotes = 0;
+    votes[i].forEach(function calcSum(value) {
+        totalVotes += value;
+    });
+    reportHTML += "<table> <caption>" + race[i] + "</caption> <tr><th>Candidate</th><th>Votes</th></tr>";
+    reportHTML += candidateRows([i], totalVotes);
+    reportHTML += "</table>";
+}
+
+document.getElementsByTagName("section")[0].innerHTML = reportHTML;
+
+function candidateRows(raceNum, totalVotes) {
+    var rowHTML = "";
+    for (var j = 0; j <= 2; j++) {
+        var candidateName = candidate[raceNum][j];
+        var candidateParty = party[raceNum][j];
+        var candidateVotes = votes[raceNum][j];
+        var candidatePercent = calcPercent(candidateVotes, totalVotes);
+        rowHTML += "<tr> <td>" + candidateName + "(" + candidateParty + ")</td> <td>" + candidateVotes.toLocaleString() + "(" + candidatePercent.toFixed(1) + "%)</td> </tr>";
+        return rowHTML;
+    }
 }
